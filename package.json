@@ -1,0 +1,20 @@
+{
+  "name": "rollup-plugin-mjml",
+  "version": "0.0.1",
+  "description": "Compile MJML templates with Rollup",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "mjml"
+  ],
+  "author": "Daan Kauwenberg <daan@daankauwenberg.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@rollup/pluginutils": "^3.0.4",
+    "mjml": "^4.5.1"
+  }
+}
