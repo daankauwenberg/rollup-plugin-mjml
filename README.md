@@ -8,7 +8,7 @@
 
 ## Usage
 
-```
+```js
 // rollup.config.js
 import mjml from 'rollup-plugin-mjml';
 
@@ -43,4 +43,4 @@ A [minimatch pattern](https://github.com/isaacs/minimatch), or array of patterns
 
 ## License
 
-The ISC License (ISC). Please see [License File](https://github.com/daankauwenberg/rollup-plugin-mjml/license) for more information.
+The ISC License (ISC). Please see [License File](https://github.com/daankauwenberg/rollup-plugin-mjml/blob/master/LICENSE) for more information.
