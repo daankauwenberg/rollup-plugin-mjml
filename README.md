@@ -1,5 +1,3 @@
-> 🚧 rollup-plugin-mjml is still in development. Will be out soon.
-
 <div class="text-xs-center" align="center" style="margin: 20px">
   <img src="https://user-images.githubusercontent.com/9211670/72424331-170b8e00-3786-11ea-9792-9168ee5aafec.png">
 </div>
@@ -24,8 +22,6 @@ export default {
   ]
 }
 ```
-
-### Including templates
 
 After configuring you need to include the .mjml template files in your bundle. You can use either option:
 
@@ -69,8 +65,6 @@ Options can be added as parameter to the plugin, for example:
   ]
 //...
 ```
-
-All available options are listed below:
 
 ### `outputDir`
 Type: `String`<br>
