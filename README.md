@@ -24,7 +24,15 @@ export default {
 
 ### `outputDir`
 Type: `String`<br>
-Default: `dist`
+Default: _Same location as where the bundle is exported_
+
+The output directory is selected in the following order:<br> _Plugin configuration_ > _Rollup config output.dir_ > _Parsed directory from Rollup config output.file_ > _prints to stdout_.
+
+### `outputExt`
+Type: `String`<br>
+Default: `html`
+
+The extension can be changed to fit needs e.g. twig. This only changes the filename, no other rendering is done. Language specific logic could be placed in `mj-raw` tags.
 
 ### `exclude`
 
@@ -40,6 +48,19 @@ Default: `null`
 
 A [minimatch pattern](https://github.com/isaacs/minimatch), or array of patterns, which specifies the files in the build the plugin should operate on. By default all files are targeted.
 
+#### MJML Options
+
+Additionally the MJML options can be added. More information can be found in the [MJML Documentation](https://mjml.io/documentation/#inside-node-js). In short, following options can be added:
+
+- `fonts`
+- `keepComments`
+- `beautify`
+- `minify`
+- `validationLevel`
+- `filePath`
+- `mjmlConfigPath`
+- `minifyOptions`
+- `juicePreserveTags`
 
 ## License
 
