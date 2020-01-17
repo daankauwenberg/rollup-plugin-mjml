@@ -70,7 +70,7 @@ Options can be added as parameter to the plugin, for example:
 Type: `String`<br>
 Default: _Same location as where the bundle is exported_
 
-The output directory is selected in the following order:<br> _Plugin configuration_ > _Rollup config output.dir_ > _Parsed directory from Rollup config output.file_ > _prints to stdout_.
+A relative path from where Rollup is initiated, e.g. `dist/email`.
 
 ### `outputExt`
 Type: `String`<br>

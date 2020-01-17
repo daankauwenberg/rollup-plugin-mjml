@@ -13,72 +13,74 @@ const defaults = {
 const mjmlWhitelist = ['fonts', 'keepComments', 'beautify', 'minify', 'validationLevel', 'filePath', 'juicePreserveTags', 'minifyOptions', 'mjmlConfigPath'];
 
 export default function mjml(opts = {}) {
-  const ids = [];
-  const options = Object.assign({}, defaults, opts);
+  const templateSet = new Set();
+  const options = Object.assign({}, defaults, opts);  
   const filter = createFilter(options.include, options.exclude);
+
   // MJML Options
-  const mjmlOptions = JSON.parse(JSON.stringify(options));
+  const mjmlOptions = Object.assign({}, options);
   Object.keys(mjmlOptions).forEach(key => { if (!mjmlWhitelist.includes(key)) delete mjmlOptions[key]; });
-
-  function generateTemplate(id) {
-    const mjmlErrorMessage = (error) => `Line ${error.line} of ${id} (${error.tagName}) - ${error.message}`;
-    return new Promise(async (resolve, reject) => {
-      try {
-        // Read the file's content and get the path object
-        const [mjmlCode, file] = await Promise.all([
-          fsPromises.readFile(id, {encoding: 'utf8'}),
-          path.parse(id)
-        ]);
-        
-        // Render the mjml syntax
-        let htmlOutput;
-        try {
-          htmlOutput = mjml2html(mjmlCode, mjmlOptions);
-        } catch(e) {
-          // If validationLevel is strict (error is thrown), format the error and abort bundling.
-          e.errors.map(error => error.formattedMessage = mjmlErrorMessage(error));
-          e.message = e.errors[0].formattedMessage;
-          this.error(e);
-        }
-
-        // Log any errors as warning
-        htmlOutput.errors.forEach(error => this.warn(mjmlErrorMessage(error)));
-        
-        if (options.outputDir) {
-          // Write the templates
-          await fsPromises.writeFile(`${options.outputDir}/${file.name}.${options.outputExt}`, htmlOutput.html);
-        } else {
-          // Print to stdout
-          console.log(htmlOutput.html);
-        };
-        resolve();
-      } catch(e) {
-        reject(e);
-      }
-    });
-  };
 
   return {
     name: 'mjml',
 
-    transform(code, id) {
-      if (!filter(id) || !id.endsWith('.mjml')) return null;
-      ids.push(id);
-      return '';
+    async load(id) {
+      if (!filter(id) || !id.endsWith('.mjml')) return;
+
+      const [content, file] = await Promise.all([
+        fsPromises.readFile(id, {encoding: 'utf-8'}),
+        path.parse(id)
+      ]).catch(e => this.error(e));
+
+      // MJML to HTML
+      let htmlOutput;
+      const mjmlErrorMessage = (error) => `Line ${error.line} of ${id} (${error.tagName}) - ${error.message}`;
+      try {
+        htmlOutput = mjml2html(content, mjmlOptions);
+      } catch(e) {
+        // If validationLevel is strict (error is thrown), format the error and abort bundling.
+        e.errors.map(error => error.formattedMessage = mjmlErrorMessage(error));
+        e.message = e.errors[0].formattedMessage;
+        this.error(e);
+      }
+      htmlOutput.errors.forEach(error => this.warn(mjmlErrorMessage(error)));
+
+      // Emit to an additional file
+      const fileName =`${file.name}.${options.outputExt}`
+      this.emitFile({
+        type: 'asset',
+        fileName,
+        source: htmlOutput.html
+      });
+      
+      // A set used for reference in generateBundle
+      templateSet.add(fileName);
+
+      // Rollup expects JavaScript. 
+      return {
+        code: '',
+      };
     },
 
-    async generateBundle(opts, bundle) {
-      try {
-        // Set the outputDir
-        options.outputDir = 
-          options.outputDir ? options.outputDir
-            : opts.dir ? opts.dir
-              : opts.file ? path.parse(opts.file).dir
-                : null;
-        if (options.outputDir) await fsPromises.mkdir(options.outputDir, { recursive: true });
-        await Promise.all(ids.map(id => generateTemplate.call(this, id)));
-      } catch(e) {
-        this.error(e);
+    async generateBundle(outputOptions, bundles) {
+      for(const bundleId of Object.keys(bundles)) {
+        const bundle = bundles[bundleId];
+        if (!templateSet.has(bundleId)) {
+          // Not a loaded MJML file.
+          continue;
+        }
+        if(!options.outputDir){
+          // Export to the rollup output config location.
+          continue;
+        }
+        try {
+          await fsPromises.mkdir(options.outputDir, { recursive: true });
+          await fsPromises.writeFile(`${options.outputDir}/${bundle.fileName}`, bundle.source);
+          // Prevent being emitted
+          delete bundles[bundleId];
+        } catch(e) {
+          this.error(e);
+        }
       }
     }
   }

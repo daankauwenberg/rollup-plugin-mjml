@@ -4,7 +4,7 @@
   "description": "Compile MJML templates with Rollup",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
   "keywords": [
     "rollup",
@@ -16,5 +16,15 @@
   "dependencies": {
     "@rollup/pluginutils": "^3.0.4",
     "mjml": "^4.5.1"
+  },
+  "devDependencies": {
+    "ava": "^2.4.0",
+    "esm": "^3.2.25",
+    "rollup": "^1.29.0"
+  },
+  "ava": {
+    "require": [
+      "esm"
+    ]
   }
 }
