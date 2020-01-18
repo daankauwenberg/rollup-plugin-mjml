@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-mjml",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Compile MJML templates with Rollup",
   "main": "src/index.js",
   "scripts": {
