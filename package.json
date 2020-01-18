@@ -23,6 +23,10 @@
     "rollup": "^1.29.0"
   },
   "ava": {
+    "files": [
+      "!**/fixtures/**",
+      "!**/helpers/**"
+    ],
     "require": [
       "esm"
     ]
