@@ -12,7 +12,7 @@ const defaults = {
 
 const mjmlWhitelist = ['fonts', 'keepComments', 'beautify', 'minify', 'validationLevel', 'filePath', 'juicePreserveTags', 'minifyOptions', 'mjmlConfigPath'];
 
-export default function mjml(opts = {}) {
+const mjml = (opts = {})  =>{
   const templateSet = new Set();
   const options = Object.assign({}, defaults, opts);  
   const filter = createFilter(options.include, options.exclude);
@@ -85,3 +85,5 @@ export default function mjml(opts = {}) {
     }
   }
 }
+
+module.exports = mjml;
