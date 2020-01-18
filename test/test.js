@@ -17,6 +17,9 @@ import mjml from '../src';
 
 const output = { dir: 'output', format: 'esm' };
 
+// Imported by JS
+
+// Direct input
 test('direct input', async (t) => {
   const conf = {
     input: `./test/fixtures/template.mjml`,
@@ -33,3 +36,5 @@ test('direct input', async (t) => {
   // console.log(code);
   t.true(true);
 });
+
+// Can configure extension

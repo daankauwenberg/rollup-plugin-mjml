@@ -16,8 +16,8 @@ Add `mjml()` to your `rollup.config.js` file.
 import mjml from 'rollup-plugin-mjml';
 
 export default {
-  ...
-  plugins:[
+  //...
+  plugins: [
     mjml()
   ]
 }
@@ -31,7 +31,7 @@ Easiest withouth extra dependencies is to import the templates in your Javascrip
 
 ```js
 // main.js
-import './mailtemplate.mjml`
+import './mailtemplate.mjml'
 ```
 
 #### Using @rollup/plugin-multi-entry
@@ -43,10 +43,10 @@ Alternatively, you can use Rollup's own plugin [multi-entry](https://github.com/
 import multi from '@rollup/plugin-multi-entry';
 import mjml from 'rollup-plugin-mjml';
 
-{
+export default {
   input: ['src/main.js', 'src/mail/**/*.mjml'],
-  plugins: [multi(), mjml()],
   //...
+  plugins: [multi(), mjml()],
 }
 ```
 
@@ -56,14 +56,15 @@ Options can be added as parameter to the plugin, for example:
 
 ```js
 // rollup.config.js
-//...
+export default {
+  //...
   plugins: [
     mjml({
       outputDir: 'dist/mail',
       validationLevel: 'strict',
     })
   ]
-//...
+}
 ```
 
 ### `outputDir`
