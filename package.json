@@ -1,6 +1,10 @@
 {
   "name": "rollup-plugin-mjml",
   "version": "1.0.0",
+  "homepage": "https://github.com/daankauwenberg/rollup-plugin-mjml",
+  "bugs": {
+    "url" : "https://github.com/daankauwenberg/rollup-plugin-mjml/issues"
+  },
   "description": "Compile MJML templates with Rollup",
   "main": "src/index.js",
   "scripts": {
