@@ -1,7 +1,7 @@
-import { createFilter } from '@rollup/pluginutils';
-import { promises as fsPromises } from 'fs';
-import path from 'path';
-import mjml2html from 'mjml';
+const { createFilter } = require('@rollup/pluginutils');
+const fs = require('fs');
+const path = require('path');
+const mjml2html = require('mjml');
 
 const defaults = {
   outputDir: null,
@@ -28,7 +28,7 @@ export default function mjml(opts = {}) {
       if (!filter(id) || !id.endsWith('.mjml')) return;
 
       const [content, file] = await Promise.all([
-        fsPromises.readFile(id, {encoding: 'utf-8'}),
+        fs.promises.readFile(id, {encoding: 'utf-8'}),
         path.parse(id)
       ]).catch(e => this.error(e));
 
@@ -74,8 +74,8 @@ export default function mjml(opts = {}) {
           continue;
         }
         try {
-          await fsPromises.mkdir(options.outputDir, { recursive: true });
-          await fsPromises.writeFile(`${options.outputDir}/${bundle.fileName}`, bundle.source);
+          await fs.promises.mkdir(options.outputDir, { recursive: true });
+          await fs.promises.writeFile(`${options.outputDir}/${bundle.fileName}`, bundle.source);
           // Prevent being emitted
           delete bundles[bundleId];
         } catch(e) {
