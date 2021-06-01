@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-mjml",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://github.com/daankauwenberg/rollup-plugin-mjml",
   "bugs": {
     "url": "https://github.com/daankauwenberg/rollup-plugin-mjml/issues"
